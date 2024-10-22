@@ -19,9 +19,9 @@ _thread_(void *arg)
 	name = (const char *)arg;
 	for (i=0; i<100; ++i) {
 		printf("%s %d\n", name, i);
-		// kill some cpu cycles
+		/* kill some cpu cycles */
 		us_sleep(20000);
-		// yield cpu to someone else
+		/* yield cpu to someone else */
 		scheduler_yield();
 	}
 }
@@ -32,6 +32,7 @@ main(int argc, char *argv[])
 	UNUSED(argc);
 	UNUSED(argv);
 
+    /* create five schdulers */
 	if (scheduler_create(_thread_, "hello") ||
 	    scheduler_create(_thread_, "world") ||
 	    scheduler_create(_thread_, "love") ||

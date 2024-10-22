@@ -67,7 +67,7 @@ size_t
 page_size(void)
 {
 	long size;
-// PAGESIZE一般是4096kb，positive size is the correct size
+/* PAGESIZE一般是4096kb，positive size is the correct size */
 	if ((0 >= (size = sysconf(_SC_PAGESIZE)))) {
 		EXIT("sysconf()");
 		return 0;
@@ -75,7 +75,7 @@ page_size(void)
 	return (size_t)size;
 }
 
-// P= A，只有三次需要调用p，第一次是malloc， 第二次是调用这个函数，第三次就是free的时候
+/* P= A，只有三次需要调用p，第一次是malloc， 第二次是调用这个函数，第三次就是free的时候 */
 void *
 memory_align(void *p, size_t n)
 {

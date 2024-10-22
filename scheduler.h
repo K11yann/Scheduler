@@ -14,8 +14,8 @@
  * scheduler_fnc_t defines the signature of the user thread function to
  * be scheduled by the scheduler. The user thread function will be supplied
  * with a copy of the arg specified when creating the thread.
+ * A pointer arg can point any struct
  */
-// 如果有一个arg指针，那么可以指向任何struct，所以一个*arg就够了
 
 typedef void (*scheduler_fnc_t)(void *arg);
 
@@ -41,14 +41,14 @@ int scheduler_create(scheduler_fnc_t fnc, void *arg);
  *     have terminated.
  *   * This function is not re-enterant.
  */
-// 调用完create之后，就调用execute，execute会一直等待，等所有的children结束执行
+/* 调用完create之后，就调用execute，execute会一直等待，等所有的children结束执行 */
 
 void scheduler_execute(void);
 
 /**
  * Called from within a user thread to yield the CPU to another user thread.
+ * Not neccesary, but it helps simplize the whole project 
  */
-// 不是必须的，但是会简化整个项目，
 void scheduler_yield(void);
 
 #endif /* _SCHEDULER_H_ */
