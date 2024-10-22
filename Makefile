@@ -13,10 +13,14 @@ LDLIBS =
 DEST   = cs238
 SRCS  := $(wildcard *.c)
 OBJS  := $(SRCS:.c=.o)
+DEBUG  = -g -DDEBUG
 
 all: $(OBJS)
 	@echo "[LN]" $(DEST)
 	@$(CC) -o $(DEST) $(OBJS) $(LDLIBS)
+
+debug: CFLAGS += $(DEBUG)
+debug: all
 
 %.o: %.c
 	@echo "[CC]" $<

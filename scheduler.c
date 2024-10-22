@@ -25,13 +25,13 @@
 
 /* gcc -c -S -O3（不link，只编译） ,会生成scheduler.s */
 
-# define SZ_STACK 1048576
+#define SZ_STACK 4096
 
 struct thread{
     jmp_buf ctx;
     struct {
         /* unsigned gurentee length */
-        char * memory; 
+        char *memory; 
         /* actually allocated */
         char *memory_;
     } stack;
@@ -48,21 +48,23 @@ struct thread{
     struct thread *link;
 };
 
-struct thread *head, *thread; /*currently running thread*/
+struct thread *head, *current; /*currently running thread*/
 jmp_buf ctx;
 
 /* *head, *thread 是唯一两个global */
 
 /*clean up the linked list */
 void destroy(void) {
-    struct thread *t, *t_;
-    t = head -> link;
-    while (!t) {
-        t_ = t;
-        free(t_ -> stack.memory_);
-        free(t_);
-        t = t -> link;
-    }
+    struct thread *t, *next;
+    t = head;
+    do {
+        next = t->link;
+        free(t->stack.memory_); 
+        free(t);
+        t = next;
+    } while (t != head);
+    head = NULL;
+    current = NULL;
 }
 
 /* 初始化 to create a new thread */
@@ -77,21 +79,27 @@ int scheduler_create(scheduler_fnc_t fnc, void *arg) {
     t -> status = INIT;
     t -> code.fnc = fnc;
     t -> code.arg = arg;
-    t -> stack.memory_ = malloc(SZ_STACK+ PAGE_SIZE);
+    t->stack.memory_ = malloc(SZ_STACK + PAGE_SIZE);
     if (t -> stack.memory_ == NULL) {
         free(t);
         return -1;
     }
     t -> stack.memory = memory_align(t -> stack.memory_, PAGE_SIZE);
-    t -> link = head;
-    head = t;
+    if (head == NULL) {
+        head = t;
+        current = t;
+        t -> link = t;
+    } else {
+        t -> link = current -> link;
+        current -> link = t;
+        current = t;
+    }
     return 0;
 }
 
-static struct thread * candidate(void) {
-    struct thread *t;
-    t = head;
-    while (t) {
+static struct thread *candidate(void) {
+    struct thread *t = current -> link;
+    while (t != current) {
         if (t -> status == INIT || t -> status == SLEEPING) {
             return t;
         }
@@ -103,23 +111,21 @@ static struct thread * candidate(void) {
 
 void schedule(void) {
     struct thread *t = candidate();
+    uint64_t rsp;
     if (t == NULL) {
         return;
     }
-    if (t -> status == INIT) {
-        t -> stack.memory_ = (t -> stack.memory) + SZ_STACK;
-        __asm__ volatile (
-            "mov %0, %%rsp\n"  
-            :                   
-            : "r"(t -> stack.memory_)               
-        );
-        t -> status = RUNNING;
-        t -> code.fnc(t -> code.arg);
-        t -> status = TERMINATED;
+    current = t;
+    if (current -> status == INIT) {
+        rsp = (uint64_t)current->stack.memory + SZ_STACK;
+        __asm__ volatile("mov %[rs], %%rsp \n" : [rs] "+r"(rsp)::);
+        current -> status = RUNNING;
+        current -> code.fnc(current -> code.arg);
+        current -> status = TERMINATED;
         longjmp(ctx, 1);
     } else {
-        t -> status = RUNNING;
-        longjmp(t -> ctx, 1);
+        current -> status = RUNNING;
+        longjmp(current -> ctx, 1);
     }
 }
 
@@ -133,8 +139,8 @@ void scheduler_execute(void) {
 
 /* you r the only one runnung thread */
 void scheduler_yield(void) {
-    if(thread && !setjmp(thread->ctx)){
-        thread->status= SLEEPING;
+    if(current && !setjmp(current->ctx)){
+        current->status= SLEEPING;
         /* restore */
         longjmp(ctx, 1);
 
