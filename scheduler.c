@@ -48,10 +48,9 @@ struct thread{
     struct thread *link;
 };
 
-struct thread *head, *current; /*currently running thread*/
+struct thread *head, *current; 
 jmp_buf ctx;
 
-/* *head, *thread 是唯一两个global */
 
 /*clean up the linked list */
 void destroy(void) {
@@ -73,7 +72,7 @@ int scheduler_create(scheduler_fnc_t fnc, void *arg) {
     struct thread *t = malloc(sizeof(struct thread));
     /* initialize failed */
     if (!t) {
-        TRACE("scheduler_create malloc failed");
+        TRACE("scheduler_create malloc()");
         return -1;
     }
     t -> status = INIT;
@@ -129,15 +128,29 @@ void schedule(void) {
     }
 }
 
-/* call by main after all the threads created */
+void set_timer(void) {
+    if (SIG_ERR == signal(SIGALRM, (__sighandler_t)scheduler_yield)) {
+        TRACE("set_timer signal()");
+    }
+    alarm(1);
+}
+
+void clear_timer() {
+    alarm(0);
+    if (SIG_ERR == signal(SIGALRM, SIG_DFL)) {
+        TRACE("clear_timer signal()");
+    }
+}
+
 void scheduler_execute(void) {
-    setjmp(ctx); /* address of ctx */
+    setjmp(ctx);
+    set_timer();
     /* go find one thread and run it; if schedule scucess, it will go back setjmp,but */
-    schedule(); 
+    schedule();
+    clear_timer(); 
     destroy();
 }
 
-/* you r the only one runnung thread */
 void scheduler_yield(void) {
     if(current && !setjmp(current->ctx)){
         current->status= SLEEPING;

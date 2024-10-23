@@ -1,62 +1,22 @@
-==31781== Memcheck, a memory error detector
-==31781== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
-==31781== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
-==31781== Command: ./cs238
-==31781== Parent PID: 3949
-==31781== 
-==31781== Warning: client switching stacks?  SP change: 0x1ffefffbd0 --> 0x4a79000
-==31781==          to suppress, use: --max-stackframe=137344084944 or greater
-==31781== Warning: client switching stacks?  SP change: 0x4a78fa8 --> 0x1ffefffbe0
-==31781==          to suppress, use: --max-stackframe=137344085048 or greater
-==31781== Warning: client switching stacks?  SP change: 0x1ffefffbd0 --> 0x4a7b000
-==31781==          to suppress, use: --max-stackframe=137344076752 or greater
-==31781==          further instances of this message will not be shown.
-==31781== Invalid free() / delete / delete[] / realloc()
-==31781==    at 0x484988F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31781==    by 0x10942D: destroy (in /home/yiyank/Final_Projects/Scheduler/cs238)
-==31781==    by 0x109671: scheduler_execute (in /home/yiyank/Final_Projects/Scheduler/cs238)
-==31781==    by 0x109271: main (in /home/yiyank/Final_Projects/Scheduler/cs238)
-==31781==  Address 0x4a79000 is 7,808 bytes inside a block of size 8,192 alloc'd
-==31781==    at 0x4846828: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31781==    by 0x1094B6: scheduler_create (in /home/yiyank/Final_Projects/Scheduler/cs238)
-==31781==    by 0x10921A: main (in /home/yiyank/Final_Projects/Scheduler/cs238)
-==31781== 
-==31781== 
-==31781== HEAP SUMMARY:
-==31781==     in use at exit: 40,960 bytes in 5 blocks
-==31781==   total heap usage: 11 allocs, 11 frees, 43,224 bytes allocated
-==31781== 
-==31781== 8,192 bytes in 1 blocks are definitely lost in loss record 1 of 5
-==31781==    at 0x4846828: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31781==    by 0x1094B6: scheduler_create (in /home/yiyank/Final_Projects/Scheduler/cs238)
-==31781==    by 0x10921A: main (in /home/yiyank/Final_Projects/Scheduler/cs238)
-==31781== 
-==31781== 8,192 bytes in 1 blocks are definitely lost in loss record 2 of 5
-==31781==    at 0x4846828: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31781==    by 0x1094B6: scheduler_create (in /home/yiyank/Final_Projects/Scheduler/cs238)
-==31781==    by 0x10922D: main (in /home/yiyank/Final_Projects/Scheduler/cs238)
-==31781== 
-==31781== 8,192 bytes in 1 blocks are definitely lost in loss record 3 of 5
-==31781==    at 0x4846828: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31781==    by 0x1094B6: scheduler_create (in /home/yiyank/Final_Projects/Scheduler/cs238)
-==31781==    by 0x109240: main (in /home/yiyank/Final_Projects/Scheduler/cs238)
-==31781== 
-==31781== 8,192 bytes in 1 blocks are definitely lost in loss record 4 of 5
-==31781==    at 0x4846828: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31781==    by 0x1094B6: scheduler_create (in /home/yiyank/Final_Projects/Scheduler/cs238)
-==31781==    by 0x109253: main (in /home/yiyank/Final_Projects/Scheduler/cs238)
-==31781== 
-==31781== 8,192 bytes in 1 blocks are definitely lost in loss record 5 of 5
-==31781==    at 0x4846828: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31781==    by 0x1094B6: scheduler_create (in /home/yiyank/Final_Projects/Scheduler/cs238)
-==31781==    by 0x109266: main (in /home/yiyank/Final_Projects/Scheduler/cs238)
-==31781== 
-==31781== LEAK SUMMARY:
-==31781==    definitely lost: 40,960 bytes in 5 blocks
-==31781==    indirectly lost: 0 bytes in 0 blocks
-==31781==      possibly lost: 0 bytes in 0 blocks
-==31781==    still reachable: 0 bytes in 0 blocks
-==31781==         suppressed: 0 bytes in 0 blocks
-==31781== 
-==31781== For lists of detected and suppressed errors, rerun with: -s
-==31781== ERROR SUMMARY: 10 errors from 6 contexts (suppressed: 0 from 0)
+==36588== Memcheck, a memory error detector
+==36588== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==36588== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
+==36588== Command: ./cs238
+==36588== Parent PID: 33927
+==36588== 
+==36588== Warning: client switching stacks?  SP change: 0x1ffefffbe0 --> 0x4a79000
+==36588==          to suppress, use: --max-stackframe=137344084960 or greater
+==36588== Warning: client switching stacks?  SP change: 0x4a78fa8 --> 0x1ffefffbf0
+==36588==          to suppress, use: --max-stackframe=137344085064 or greater
+==36588== Warning: client switching stacks?  SP change: 0x1ffefffbe0 --> 0x4a7b000
+==36588==          to suppress, use: --max-stackframe=137344076768 or greater
+==36588==          further instances of this message will not be shown.
+==36588== 
+==36588== HEAP SUMMARY:
+==36588==     in use at exit: 0 bytes in 0 blocks
+==36588==   total heap usage: 11 allocs, 11 frees, 43,224 bytes allocated
+==36588== 
+==36588== All heap blocks were freed -- no leaks are possible
+==36588== 
+==36588== For lists of detected and suppressed errors, rerun with: -s
+==36588== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
